@@ -22,7 +22,7 @@ def load_csv(file_path):
     try:
         return pd.read_csv(file_path).values
     except pd.errors.EmptyDataError:
-        return np.array([])
+        return np.array([[]])
 
 def load_npy(file_path):
     return np.load(file_path)
