@@ -22,7 +22,7 @@ def load_csv(file_path):
     try:
         return pd.read_csv(file_path).values
     except pd.errors.EmptyDataError:
-        return np.array([[]])
+        return None
 
 def load_npy(file_path):
     return np.load(file_path)
@@ -74,11 +74,12 @@ def load_experiment(glob_path,
     data = []
     for path in paths:
         loaded_data = loader(path)
-        if truncate_to_min and len(loaded_data) < min:
-            min = len(loaded_data)
-        if column is not None:
-            loaded_data = loaded_data[:, column]
-        data.append(loaded_data)
+        if loaded_data is not None:
+            if truncate_to_min and len(loaded_data) < min:
+                min = len(loaded_data)
+            if column is not None:
+                loaded_data = loaded_data[:, column]
+            data.append(loaded_data)
 
     # truncate all the data to be of the same length
     if truncate_to_min:
